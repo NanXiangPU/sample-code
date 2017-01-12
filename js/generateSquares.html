@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>QUnit Example</title>
+  <link rel="stylesheet" href="../lib/qunit-2.0.1.css">
+  <script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="../lib/sinon.js"></script>
+  <script type="text/javascript" src="../lib/d3.v3.min.js"></script>
+  <script src="../lib/qunit-2.0.1.js"></script>
+  <script src="../../main/webapp/big.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <div id="canvas"></div>
+  <script type="text/javascript">
+  QUnit.test("generateSquares", function( assert ) {
+      var numNodes_copy = numNodes;
+      var colNum_copy = colNum;
+      var nodes_copy = nodes.slice();
+      nodes = [
+        {
+          cx: 0,
+          cy: 0,
+          id: 0
+        },
+        {
+          cx: 1,
+          cy: 0,
+          id: 1
+        },
+      ];
+      numNodes = 1;
+      colNum = 2;
+      generateSquares();
+      assert.equal( $("#canvas").attr("height"), (length + spacing) * colNum + 'px' );
+      numNodes = 2;
+      colNum = 1;
+      generateSquares();
+      assert.equal( $("#canvas").attr("height"), (200 + spacing) * Math.floor(numNodes / colNum )
+        + 'px' );
+      for(var j = 0; j < 2; j++) {
+        assert.equal( $("rect").eq(j).attr("x"), nodes[j].cx );
+        assert.equal( $("rect").eq(j).attr("y"), nodes[j].cy );
+        assert.equal( $("rect").eq(j).attr("width"), length );
+        assert.equal( $("rect").eq(j).attr("fill"), goodNodeColor );
+        assert.equal( $("rect").eq(j).attr("class"), "sensors" );
+        assert.equal( $("rect").eq(j).attr("id"), "sensor" + nodes[j].id );
+        assert.equal( $("rect").eq(j).css("opacity"), .7 );
+        assert.ok( $("rect")[j].__ondblclick._.toString() == showHistory.toString() );
+        assert.ok( $("rect")[j].__onmouseout._.toString() == reduceSquare.toString() );
+        assert.ok( $("rect")[j].__onmouseover._.toString() == enlargeSquare.toString() );
+      }
+      numNodes = numNodes_copy;
+      colNum = colNum_copy;
+      nodes = nodes_copy.slice();
+    });
+  </script>
+</body>
+</html>

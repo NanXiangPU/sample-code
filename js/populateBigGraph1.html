@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>populateBigGraph test 1</title>
+	<link rel="stylesheet" href="../lib/qunit-2.0.1.css">
+	<script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="../lib/d3.v3.min.js"></script>
+	<script src="../lib/qunit-2.0.1.js"></script>
+	<script src="../../main/webapp/big.js"></script>
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+	<div id="big-title0"></div>
+	<div id="display-graph0">
+		<svg></svg>
+	</div>
+	<script type="text/javascript">
+		QUnit.test("populateBigGraph", function( assert ) {
+			var nodeRules_copy = nodeRules.slice();
+			var serviceUrl_copy = serviceUrl;
+			nodeRules = [
+				[
+					{
+						definition: {
+							ruleDefinitionId: 0,
+							name: "a"
+						},
+						nodeRuleId: 0
+					},
+					{
+						definition: {
+							ruleDefinitionId: 1,
+							name: "b"
+						},
+						nodeRuleId: 1
+					}
+				],
+				[
+					{
+						definition: {
+							ruleDefinitionId: 2,
+							name: "c"
+						},
+						nodeRuleId: 2
+					},
+					{
+						definition: {
+							ruleDefinitionId: 3,
+							name: "d"
+						},
+						nodeRuleId: 3
+					}
+				],
+				[
+					{	
+						definition: {
+							ruleDefinitionId: 4,
+							name: "e"
+						},
+						nodeRuleId: 4
+					},
+					{
+						definition: {
+							ruleDefinitionId: 5,
+							name: "f"
+						},
+						nodeRuleId: 5
+					}
+				]
+			];
+			serviceUrl = "http://localhost:3000";
+			populateBigGraph(0,0);
+			svg = d3.select('#display-graph0').select('svg');
+			var done = assert.async();
+			setTimeout( function() {
+				assert.ok( svg != undefined );
+				assert.equal( svg.select("text").length, 1 );
+				assert.equal( svg.select("text").text(), "No data to display D=" );
+				assert.equal( svg.select("text").attr("x"), 5 );
+				assert.equal( svg.select("text").attr("y"), 20 );
+				svg.select("text").remove();
+				nodeRules = nodeRules_copy.slice();
+				serviceUrl = serviceUrl_copy;
+				done();
+			}, 500);
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>switchSparkline test</title>
+  <link rel="stylesheet" href="../lib/qunit-2.0.1.css">
+  <script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="../lib/sinon.js"></script>
+  <script type="text/javascript" src="../lib/d3.v3.min.js"></script>
+  <script src="../lib/qunit-2.0.1.js"></script>
+  <script src="../../main/webapp/big.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <a id="d-1"></a>
+  <a id="m-1"></a>
+  <a id="y-1"></a>
+  <div id="graph1" width="1" height="1">
+    <svg>
+      <path></path>
+    </svg>
+  </div>
+  <script type="text/javascript">
+  QUnit.test("switchSparkline", function( assert ) {
+    var nodeRuleHistories_copy = nodeRuleHistories.slice();
+    nodeRuleHistories = [[0,1,2,3], [{key: 0, value: 0} ,{key: 1, value: 1}, {key: 2, value: 2},{key: 3, value: 3}], [0,1,2,3]];
+
+    $("#d-1").on("click", switchSparkline);
+    $("#d-1").trigger("click");
+    assert.equal( document.getElementById('d-1').style.backgroundColor, "rgb(45, 144, 222)" );
+    assert.equal( document.getElementById('m-1').style.backgroundColor, "rgb(128, 128, 128)" );
+    assert.equal( document.getElementById('y-1').style.backgroundColor, "rgb(128, 128, 128)" );
+    assert.ok( $("path").data != undefined );
+    var done1 = assert.async();
+    setTimeout( function() {
+      assert.ok( $("path").attr("d") != undefined );
+      done1();
+    }, 500);
+
+    $("#m-1").on("click", switchSparkline);
+    $("#m-1").trigger("click");
+    assert.equal( document.getElementById('d-1').style.backgroundColor, "rgb(128, 128, 128)" );
+    assert.equal( document.getElementById('m-1').style.backgroundColor, "rgb(45, 144, 222)" );
+    assert.equal( document.getElementById('y-1').style.backgroundColor, "rgb(128, 128, 128)" );
+    assert.ok( $("path").data != undefined );
+    var done2 = assert.async();
+    setTimeout( function() {
+      assert.ok( $("path").attr("d") != undefined );
+      done2();
+    }, 500);
+
+    $("#y-1").on("click", switchSparkline);
+    $("#y-1").trigger("click");
+    var done3 = assert.async();
+    setTimeout( function() {
+      assert.ok( $("path").attr("d") != undefined );
+      nodeRuleHistories = nodeRuleHistories_copy.slice();
+      done3();
+    }, 500);
+  });
+  </script>
+</body>
+</html>

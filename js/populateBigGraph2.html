@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>populateBigGraph test 2</title>
+	<link rel="stylesheet" href="../lib/qunit-2.0.1.css">
+	<script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="../lib/d3.v3.min.js"></script>
+	<script src="../lib/qunit-2.0.1.js"></script>
+	<script src="../../main/webapp/big.js"></script>
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+	<div id="big-title0"></div>
+	<div id="display-graph0">
+		<svg>
+			<g id="prev-g"></g>
+			<path id="prev-p"></path>
+		</svg>
+	</div>
+	<script type="text/javascript">
+		QUnit.test("populateBigGraph 2", function( assert ) {
+			var nodeRules_copy = nodeRules.slice();
+			var serviceUrl_copy = serviceUrl;
+			var currentGraphs_copy = currentGraphs.slice();
+			var bigGraphData_copy = bigGraphData.slice();
+			var graphLine_copy = graphLine;
+			var svg_copy = svg;
+			var xAxis_copy = xAxis;
+			var yAxis_copy = yAxis;
+			nodeRules = [
+				[
+					{
+						definition: {
+							ruleDefinitionId: 0,
+							name: "a"
+						},
+						nodeRuleId: 0
+					},
+					{
+						definition: {
+							ruleDefinitionId: 1,
+							name: "b"
+						},
+						nodeRuleId: 1
+					}
+				],
+				[
+					{
+						definition: {
+							ruleDefinitionId: 2,
+							name: "c"
+						},
+						nodeRuleId: 2
+					},
+					{
+						definition: {
+							ruleDefinitionId: 3,
+							name: "d"
+						},
+						nodeRuleId: 3
+					}
+				],
+				[
+					{	
+						definition: {
+							ruleDefinitionId: 4,
+							name: "e"
+						},
+						nodeRuleId: 4
+					},
+					{
+						definition: {
+							ruleDefinitionId: 5,
+							name: "f"
+						},
+						nodeRuleId: 5
+					}
+				]
+			];
+			serviceUrl = "http://localhost:3000";
+			$("#display-graph0").height(100);
+			$("#display-graph0").width(100);
+			populateBigGraph(0,0);
+			var done = assert.async();
+			setTimeout( function() {
+				assert.equal( $("#big-title0").text(), "a" );
+				assert.equal( currentGraphs[0], nodeRules[0][0] );
+				assert.ok( graphLine != undefined );
+				assert.equal( $("#prev-g").length, 0 );
+				assert.equal( $("#prev-p").length, 0 );
+				svg = d3.select('#display-graph0').select('svg');
+				assert.ok( xAxis != undefined );
+				assert.ok( yAxis != undefined );
+				assert.equal( svg.selectAll("g")[0].length, 2 );
+				assert.equal( svg.selectAll("g")[0][0].className.animVal, "xaxis" );
+				assert.equal( svg.selectAll("g")[0][0].className.baseVal, "xaxis" );
+				assert.equal( svg.selectAll("g")[0][0].transform.animVal[0].matrix.f, 80 );
+				assert.equal( svg.selectAll("g")[0][0].transform.baseVal[0].matrix.f, 80 );
+				assert.equal( svg.selectAll("g")[0][1].className.animVal, "yaxis" );
+				assert.equal( svg.selectAll("g")[0][1].className.baseVal, "yaxis" );
+				assert.equal( svg.selectAll("g")[0][1].transform.animVal[0].matrix.e, 50 );
+				assert.equal( svg.selectAll("g")[0][1].transform.baseVal[0].matrix.e, 50 );
+				nodeRules = nodeRules_copy.slice();
+				serviceUrl = serviceUrl_copy;
+				currentGraphs = currentGraphs_copy.slice();
+				bigGraphData = bigGraphData_copy.slice();
+				graphLine = graphLine_copy;
+				svg = svg_copy;
+				xAxis = xAxis_copy;
+				yAxis = yAxis_copy;
+				done();
+			}, 500);
+		});
+	</script>
+</body>
+</html>

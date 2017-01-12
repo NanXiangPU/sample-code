@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>QUnit Example</title>
+  <link rel="stylesheet" href="../lib/qunit-2.0.1.css">
+  <script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="../lib/sinon.js"></script>
+  <script type="text/javascript" src="../lib/d3.v3.min.js"></script>
+  <script src="../lib/qunit-2.0.1.js"></script>
+  <script src="../../main/webapp/big.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <div id="card0" onclick="close_card(0)"></div>
+  <script type="text/javascript">
+  QUnit.test("close_card", function( assert ) {
+      var cards_copy = cards.slice();
+      var done = assert.async();
+      assert.ok($("#card0").length != 0);
+      cards = [
+        {
+          id: 0
+        },
+        {
+          id: 1
+        }
+      ];
+      $("#card0").trigger("click");
+      assert.equal(cards.toString(), [{id: 1}].toString());
+      setTimeout(function() {
+        assert.equal($("#card0").length, 0);
+        cards = cards_copy.slice();
+        done();
+      }, 500 );
+    });
+  </script>
+</body>
+</html>

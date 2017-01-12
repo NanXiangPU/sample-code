@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>QUnit Example</title>
+  <link rel="stylesheet" href="../lib/qunit-2.0.1.css">
+  <script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="../lib/sinon.js"></script>
+  <script type="text/javascript" src="../lib/d3.v3.min.js"></script>
+  <script src="../lib/qunit-2.0.1.js"></script>
+  <script src="../../main/webapp/big.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script type="text/javascript">
+  QUnit.test("getNodes", function( assert ) {
+      var nodes_copy = nodes.slice();
+      var serviceUrl_copy = jQuery.extend(true, {}, serviceUrl);
+      //for(var i = 0; i < 5; i++) {
+        assert.equal( nodes.length, 0 );
+        serviceUrl = "";
+        getNodes();
+
+        assert.equal(nodes.length, 0);
+        nodes = nodes_copy.slice();
+        serviceUrl = jQuery.extend(true, {}, serviceUrl_copy);
+        var done = assert.async();
+        serviceUrl = "http://localhost:3000";
+        getNodes();
+        assert.equal( nodes.length, 0 );
+        serviceUrl = jQuery.extend(true, {}, serviceUrl_copy);
+        nodes = nodes_copy.slice();
+        setTimeout(function() {
+          assert.equal(nodes.length, 2);
+          for(var j = 0; j < 2; j++) {
+            assert.equal( nodes[j].id, j );
+            assert.equal( nodes[j].uniqueId, "a" + j );
+            assert.equal( nodes[j].cx, (j % colNum) * (length + spacing) + (sizeIncrease * length / 2) );
+            assert.equal( nodes[j].cy, Math.floor(j / colNum) * (length + spacing) + (sizeIncrease * length / 2) );
+            assert.ok( nodes[j].lat >= latitude );
+            assert.ok( nodes[j].lat <= latitude + 0.5 );
+            assert.ok( nodes[j].lon >= longitude );
+            assert.ok( nodes[j].lon <= longitude + 0.5 ); 
+          }
+          nodes = nodes_copy.slice();
+          serviceUrl = jQuery.extend(true, {}, serviceUrl_copy);
+          done();
+        }, 500);
+      //}
+    });
+  </script>
+</body>
+</html>

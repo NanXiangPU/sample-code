@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>enlargeSquare test</title>
+  <link rel="stylesheet" href="../lib/qunit-2.0.1.css">
+  <script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="../lib/d3.v3.min.js"></script>
+  <script src="../lib/qunit-2.0.1.js"></script>
+  <script src="../../main/webapp/big.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+    <script type="text/javascript">
+      QUnit.test("returnAvailableColor", function( assert ) {
+      var availableColors_copy = availableColors.slice();
+      availableColors = [1,2,3];
+      var old = availableColors;
+      returnAvailableColor(0);
+      assert.equal( old, availableColors );
+      returnAvailableColor(6);
+      assert.equal( old, availableColors );
+      returnAvailableColor(4);
+      assert.equal( availableColors.toString(), [1,2,3,4].toString() );
+      returnAvailableColor(5);
+      assert.equal( availableColors.toString(), [1,2,3,4,5].toString() );
+      returnAvailableColor(1);
+      assert.equal( availableColors.toString(), [1,2,3,4,5].toString() );
+      availableColors = availableColors_copy.slice();
+    });
+  </script>
+</body>
+</html>

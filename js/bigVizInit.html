@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>bigVizInit test</title>
+  <link rel="stylesheet" href="../lib/qunit-2.0.1.css">
+  <script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="../lib/sinon.js"></script>
+  <script type="text/javascript" src="../lib/d3.v3.min.js"></script>
+  <script src="../lib/qunit-2.0.1.js"></script>
+  <script src="../../main/webapp/big.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <dir id="sensoroverview" width="10"></dir>
+  <script type="text/javascript">
+   QUnit.test("bigVizInit", function( assert ) {
+    var serviceUrl_copy = serviceUrl;
+    var availableColors_copy = availableColors.slice();
+    var length_copy = length;
+    var spy = sinon.spy(updateViz);
+    assert.equal(serviceUrl, undefined);
+    assert.equal(availableColors.toString(), "");
+    assert.equal(length, 0);
+    assert.equal(d3.selection.prototype.moveToFront, undefined);
+    assert.equal(d3.selection.prototype.moveToBack, undefined);
+    bigVizInit();
+    assert.ok( serviceUrl != undefined );
+    assert.equal( availableColors.toString(), [1,2,3,4,5].toString() );
+    assert.equal( length, $('#sensoroverview').width() / colNum - colNum * spacing );
+    assert.equal( typeof(d3.selection.prototype.moveToFront), "function" );
+    assert.equal( typeof(d3.selection.prototype.moveToBack), "function" );
+    var done = assert.async();
+    setTimeout( function() {
+      assert.ok(spy.calledOnce);
+      serviceUrl = serviceUrl_copy;
+      availableColors = availableColors_copy.slice();
+      length = length_copy;
+      done();
+    }, 6000);
+  });
+  </script>
+</body>
+</html>

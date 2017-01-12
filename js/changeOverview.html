@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>QUnit Example</title>
+  <link rel="stylesheet" href="../lib/qunit-2.0.1.css">
+  <script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="../lib/sinon.js"></script>
+  <script type="text/javascript" src="../lib/d3.v3.min.js"></script>
+  <script src="../lib/qunit-2.0.1.js"></script>
+  <script src="../../main/webapp/big.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <div class="overview-switcher overview-selected" id="os1"></div>
+  <div class="overview-switcher" id="os2"></div>
+  <script type="text/javascript">
+  QUnit.test("changeOverview", function( assert ) {
+        changeOverview();
+        assert.ok( !($("#os1").hasClass("overview-selected")) );
+        assert.ok( $("#os2").hasClass("overview-selected") );
+        $("#os1").toggleClass("overview-selected");
+        $("#os2").toggleClass("overview-selected");
+    });
+  </script>
+</body>
+</html>

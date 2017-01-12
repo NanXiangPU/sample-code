@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>QUnit Example</title>
+  <link rel="stylesheet" href="../lib/qunit-2.0.1.css">
+  <script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="../lib/sinon.js"></script>
+  <script type="text/javascript" src="../lib/d3.v3.min.js"></script>
+  <script src="../lib/qunit-2.0.1.js"></script>
+  <script src="../../main/webapp/big.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script type="text/javascript">
+  QUnit.test("getNewAvailableColor", function( assert ) {
+      var cards_copy = cards.slice();
+      var availableColors_copy = availableColors.slice();
+      cards = [1,2,3,4,5,6];
+      assert.equal( getNewAvailableColor(1), -1 );
+      assert.equal( getNewAvailableColor(2), -1 );
+      cards = [];
+      availableColors = [1,2];
+      assert.equal( getNewAvailableColor(1), 1 );
+      assert.equal( cards.toString(), [{id: 1, colorId: 1}].toString() );
+      assert.equal( getNewAvailableColor(2), 2 );
+      assert.equal( cards.toString(), [{id: 1, colorId: 1}, {id: 2, colorId: 2}].toString() );
+      cards = cards_copy.slice();
+      availableColors = availableColors_copy.slice();
+    });
+  </script>
+</body>
+</html>

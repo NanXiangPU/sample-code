@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>updateViz test</title>
+	<link rel="stylesheet" href="../lib/qunit-2.0.1.css">
+	<script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
+	<script type="text/javascript" src="../lib/d3.v3.min.js"></script>
+	<script src="../lib/qunit-2.0.1.js"></script>
+	<script src="../../main/webapp/big.js"></script>
+</head>
+<body>
+	<div id="qunit"></div>
+	<div id="qunit-fixture"></div>
+	<script type="text/javascript">
+		QUnit.test("updateViz", function( assert ) {
+			var serviceUrl_copy = serviceUrl;
+			var data = [
+				{
+					id: 1
+				},
+				{
+					id: 2
+				},
+				{
+					id: 3
+				},
+				{
+					id: 4
+				}
+			];
+			d3.select("body").selectAll("rect")
+				.data(data)
+				.enter()
+				.append("rect");
+			serviceUrl = "http://localhost:3000";
+			updateViz();
+			var done = assert.async();
+			setTimeout( function() {
+				assert.equal( $("rect").eq(0).attr("fill"), badNodeColor );
+				assert.equal( $("rect").eq(1).attr("fill"), badNodeColor );
+				assert.equal( $("rect").eq(2).attr("fill"), goodNodeColor );
+				assert.equal( $("rect").eq(3).attr("fill"), goodNodeColor );
+				done();
+				serviceUrl = serviceUrl_copy;
+				$("rect").remove();
+			}, 6000);
+		});
+	</script>
+</body>
+</html>

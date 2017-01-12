@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>toggleborder test</title>
+  <link rel="stylesheet" href="../lib/qunit-2.0.1.css">
+  <script type="text/javascript" src="../lib/jquery-3.1.1.min.js"></script>
+  <script type="text/javascript" src="../lib/d3.v3.min.js"></script>
+  <script src="../lib/qunit-2.0.1.js"></script>
+  <script src="../../main/webapp/big.js"></script>
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <div class="overview-switcher overview-selected" id="os1"></div>
+  <div class="overview-switcher" id="os2"></div>
+  <div id="canvas"></div>
+  <script type="text/javascript">
+    QUnit.test("toggleBorders1", function( assert ) {
+      var cards_copy = cards.slice();
+      var done = assert.async();
+      var data = [
+      {
+        id: 1
+      }
+      ];
+      d3.select("body").selectAll("rect").data(data).enter().append("rect");
+      toggleBorders();
+      setTimeout(function() {
+        assert.equal( $("rect")[0].className, "sensors" );
+        cards = cards_copy.slice();
+        $("rect").remove();
+        done();
+      }, 500 );
+      
+    });
+
+    QUnit.test("toggleBorders2", function( assert ) {
+      var cards_copy = cards.slice();
+      var done = assert.async();
+      var data = [
+        {
+          id: 1
+        }
+      ];
+      d3.select("body").selectAll("rect").data(data).enter().append("rect");
+      cards = [
+        {
+          id: 1,
+          colorId: 1
+        } 
+      ];
+      toggleBorders();
+      setTimeout(function() {
+        assert.equal($("rect")[0].className, "sensors cb1");
+        cards = cards_copy.slice();
+        $("rect").remove();
+        done();
+      }, 500 ); 
+    });
+    </script>
+</body>
+</html>
